@@ -35,9 +35,11 @@ function Settings(debug, nya_delay) {
 	this.nya_delay = nya_delay;
 }
 
-function State(stack, settings) {
+function State(stack, settings, builtins) {
 	this.settings = settings;
 	this.stack = stack;
+	this.functions = {};
+	Object.assign(this.functions, builtins);
 }
 
 function Token(type, payload) {
@@ -110,7 +112,7 @@ function nyaize(types, f) {
 const binnum = ["num", "num"];
 const binstr = ["str", "str"];
 const binbool = ["bool", "bool"]
-let functions = {
+const builtins = {
 	"+":  nyaize(binnum, (a, b) => a + b),
 	"-":  nyaize(binnum, (a, b) => a - b),
 	"*":  nyaize(binnum, (a, b) => a * b),
@@ -132,7 +134,7 @@ let functions = {
 				break;
 			}
 			await execute(code, s);
-			await asyncsleep(50);
+			await asyncsleep(s.settings.nya_delay);
 			cond = s.stack.pop();
 		}
 	}),
@@ -144,8 +146,8 @@ let functions = {
 	"Myaff": nyaize(["num"], num => num.toString()),
 	"Dup" :nyaize(["any"], x => [x, x]),
 	"ayN": nyaize(["stack", "num"], (s, a) => Array(a).fill(null).map(_ => s.pop())),
-	"Nyurr": nyaize(["str", "str"], function(code, name) {
-		functions[name] = async (s) => {
+	"Nyurr": nyaize(["state", "str", "str"], function(state, code, name) {
+		state.functions[name] = async (s) => {
 			await execute(code, s);
 		};
 	}),
@@ -162,7 +164,7 @@ async function run_token(token, s) {
 	case 'n': s.stack.push(parseFloat(token.payload));                    break;
 	case 's': s.stack.push(token.payload);                                break;
 	case 'b': s.stack.push({"Purr": true, "HISS": false}[token.payload]); break;
-	case 'f': await functions[token.payload](s);                          break;
+	case 'f': await s.functions[token.payload](s);                          break;
 	case 'd':
 		if (s.settings.debug) {
 			display(`Breakpoint ${token.payload}\nStack dump:`);
@@ -270,7 +272,7 @@ async function run() {
 	let debug = document.getElementById("debug-mode").checked;
 	let nya_delay = parseInt(document.getElementById("nya-delay").value);
 	let settings = new Settings(debug, nya_delay);
-	let state = new State(stack, document.getElementById("debug-mode").checked);
+	let state = new State(stack, settings, builtins);
 	document.getElementById("output").innerHTML = "";
 	await execute(document.getElementById("code").value, state);
 	//	state.stack.dump();
@@ -280,4 +282,8 @@ async function run() {
 
 function toggle_debug() {
 	document.getElementById("demeow").classList.toggle("hidden");
+}
+
+function reset_table() {
+	document.getElementById("debug").innerHTML = `<tr id="current-stack"></tr>`;
 }

@@ -69,14 +69,15 @@ s(s(y
     <h2>Interpreter</h2>
     <div><textarea cols="40" rows="5" type="text" class="monospace" id="code"></textarea></div>
     <button onclick="toggle_debug();">Toggle demeow tools</button>
-    <button id="run-button" onclick="run();">Nya it out!</button>
+    <button id="run-button" onclick="run();">Nya it out!</button><br>
+    <label for="nya-delay">The delay between consecutive iterations as done by <code>Nya</code> (ms) (smaller is faster):</label>
     <input type="number" id="nya-delay" name="nya-delay" value="50">
-    <label for="nya-delay">The delay between consecutive iterations as done by <code>Nya</code> (ms) (smaller is faster)</label>
     <div class="hidden" id="demeow">
     <h2>Demeowing</h2>
     <input type="checkbox" id="debug-mode" name="debug-mode">
     <label for="debug-mode">Demeowing mode (enables commands <code>d</code> un <code>e</code>)</label>
     <p>(Warning: the table is a little broken but CSS is hard-)</p>
+    <button onclick="reset_table();">Reset table</button>
     <table id="debug">
       <tr id="current-stack"></tr>
     </table>
