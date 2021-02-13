@@ -46,7 +46,7 @@
     <ul>
       <li><code>AwA</code> - negates the top of s.</li>
       <li><code>Nya</code> - takes 2 arguments: a string containing code and a boolean, then, if the boolean is true, runs the code as long as the top of the stack is <code>bPurr</code></li>
-      <li><code>Nom</code> - takes a single numeric argument and consumes that many + 1 elements from the stack</li>
+      <li><code>Nom</code> - takes a single numeric argument and consumes that many + 1 (because it also has to consume its argument) elements from the stack</li>
       <li><code>Meow</code> - takes a string and outputs it</li>
       <li><code>Myaff</code> - converts a number to a string</li>
       <li><code>Dup</code> - duplicates the top of stack.</li>
@@ -69,6 +69,9 @@ s(s(y
     <h2>Interpreter</h2>
     <div><textarea cols="40" rows="5" type="text" class="monospace" id="code"></textarea></div>
     <button onclick="toggle_debug();">Toggle demeow tools</button>
+    <button id="run-button" onclick="run();">Nya it out!</button>
+    <input type="number" id="nya-delay" name="nya-delay" value="50">
+    <label for="nya-delay">The delay between consecutive iterations as done by <code>Nya</code> (ms) (smaller is faster)</label>
     <div class="hidden" id="demeow">
     <h2>Demeowing</h2>
     <input type="checkbox" id="debug-mode" name="debug-mode">
@@ -78,7 +81,6 @@ s(s(y
       <tr id="current-stack"></tr>
     </table>
     </div>
-    <button id="run-button" onclick="run();">Meow it out!</button>
     <pre id="output"></pre>
     </div>
   </body>

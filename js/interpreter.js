@@ -30,8 +30,13 @@ function add_call_info(token, state) {
 	row.innerHTML = `<td><pre>${token.type}(${token.payload})</pre></td>${state.stack.as_html()}`;
 }
 
-function State(stack, debug) {
+function Settings(debug, nya_delay) {
 	this.debug = debug;
+	this.nya_delay = nya_delay;
+}
+
+function State(stack, settings) {
+	this.settings = settings;
 	this.stack = stack;
 }
 
@@ -159,13 +164,13 @@ async function run_token(token, s) {
 	case 'b': s.stack.push({"Purr": true, "HISS": false}[token.payload]); break;
 	case 'f': await functions[token.payload](s);                          break;
 	case 'd':
-		if (s.debug) {
+		if (s.settings.debug) {
 			display(`Breakpoint ${token.payload}\nStack dump:`);
 			s.stack.dump();
 			display(`\n`);
 		}
 		break;
-	case 'e': if (s.debug)
+	case 'e': if (s.settings.debug)
 		debug(token.payload);
 		break;
 	case 'c': break; // comment
@@ -262,12 +267,15 @@ async function run() {
 	run_button.disabled = true;
 	run_button.innerHTML = "Running...";
 	let stack = new Stack([]);
+	let debug = document.getElementById("debug-mode").checked;
+	let nya_delay = parseInt(document.getElementById("nya-delay").value);
+	let settings = new Settings(debug, nya_delay);
 	let state = new State(stack, document.getElementById("debug-mode").checked);
 	document.getElementById("output").innerHTML = "";
 	await execute(document.getElementById("code").value, state);
 	//	state.stack.dump();
 	run_button.disabled = false;
-	run_button.innerHTML = "Meow it out!";
+	run_button.innerHTML = "Nya it out!";
 }
 
 function toggle_debug() {
