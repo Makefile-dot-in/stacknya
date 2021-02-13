@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>StackNya</title>
+    <meta charset="utf-8">
+    <style>
+	.monospace {
+		font-family: monospace;
+	}
+	td {
+	    border: 1px solid black;
+	}
+	table {
+	    max-width: 100vw;
+	}
+	pre {
+	    text-overflow: ellipsis;
+	    max-width: 20vw;
+	    word-break: break-all;
+	}
+	.hidden {
+	    display: none;
+	}
+    </style>
+    <script src="js/interpreter.js"></script> 
+  </head>
+  <body>
+    <h1>StackNya</h1>
+    <h3>Description</h3>
+    <p>StackNya is a stack-based language. This means that there's a single array (called a stack) around which all calculations are based. When a function is called, it receives its arguments by removing them from the stack.</p>
+    <h3>Syntax</h3>
+    <p>A StackNya program consists of one or mowe tokens. A token consists of a type (single letter) followed by a payload, optionally in parentheses, in which case it goes on as long as the initial parentheses are closed. Currently, these types exist: </p>
+    <ul>
+      <li><code>n</code> - pushes a number on the stack</li>
+      <li><code>s</code> - pushes a string on the stack</li>
+      <li><code>b</code> - pushes a boolean - <code>Purr</code> or <code>HISS</code></li>
+      <li><code>f</code> - calls a function</li>
+      <li><code>d</code> - dumps the stack to output - mostly obsolete due to the demeowing table</li>
+      <li><code>e</code> - calls a function that does nothing but can be used to debug the interpreter at specific points by placing a breakpoint on that function.</li>
+      <li><code>c</code> - no-op. Useful for comments and annotations for the demeowing table.</li>
+    </ul>
+    <h3>Functions</h3>
+    <p>Functions that correspond to binary operators work mostly as you'd expect, taking the second-to-top element on the stack as their first argument, and the top element as their second argument. These include <p><code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>, <code>&gt;</code>, <code>&lt;</code>, <code>=</code> (like C <code>==</code>), <code>&gt;=</code>, <code>&lt;=</code>, <code>.</code> (used for concatenation - <code>+</code> works for integers only), <code>&amp;</code>, <code>|</code> (like C <code>&amp;&amp;</code> and <code>||</code>)</p>
+    </p>
+    <p>The others are:</p>
+    <ul>
+      <li><code>AwA</code> - negates the top of s.</li>
+      <li><code>Nya</code> - takes 2 arguments: a string containing code and a boolean, then, if the boolean is true, runs the code as long as the top of the stack is <code>bPurr</code></li>
+      <li><code>Nom</code> - takes a single numeric argument and consumes that many + 1 elements from the stack</li>
+      <li><code>Meow</code> - takes a string and outputs it</li>
+      <li><code>Myaff</code> - converts a number to a string</li>
+      <li><code>Dup</code> - duplicates the top of stack.</li>
+      <li><code>ayN</code> - takes a numeric argument n, then reverses the last <em>n</em> elements of stack.</li>
+      <li><code>Nyurr</code> - takes a string containing NyaStack code, another string containing a function name, and creates a function with that name</li>
+      <li><code>Nyaypeof</code> - returns the type of the top element of the stack, consuming it in the process. Current types are <code>num</code>, <code>str</code>, <code>bool</code>, <code>void</code> and <code>err</code></li>
+    </ul>
+    <h3>Examples</h3>
+    <h4>Hello, World!</h4>
+    <code>
+      s(Hello, World!) fMeow
+    </code>
+    <h4><code>yes</code></h4>
+    <pre>
+s(s(y
+) fMeow bPurr) bPurr fNya
+    </pre>
+    <h4>FizzBuzz</h4>
+    <iframe src="fizzbuzz.nya"></iframe>
+    <h2>Interpreter</h2>
+    <div><textarea cols="40" rows="5" type="text" class="monospace" id="code"></textarea></div>
+    <button onclick="toggle_debug();">Toggle demeow tools</button>
+    <div class="hidden" id="demeow">
+    <h2>Demeowing</h2>
+    <input type="checkbox" id="debug-mode" name="debug-mode">
+    <label for="debug-mode">Demeowing mode (enables commands <code>d</code> un <code>e</code>)</label>
+    <p>(Warning: the table is a little broken but CSS is hard-)</p>
+    <table id="debug">
+      <tr id="current-stack"></tr>
+    </table>
+    </div>
+    <button id="run-button" onclick="run();">Meow it out!</button>
+    <pre id="output"></pre>
+    </div>
+  </body>
+</html>

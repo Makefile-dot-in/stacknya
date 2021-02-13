@@ -1,0 +1,43 @@
+s(f% n0 f=) sDivides fNyurr c(creates a function named `divides' that cheks if the last element on the stack divides the second top element.)
+s(fDup n100 f<) sNotReached100 fNyurr c(creates a function that returns whether 100 is the last element of the stack)
+
+n0 c(starting value)
+s(
+	n1 f+ c(increment)
+	s(
+		sFizz fMeow bHISS
+	)
+        c(before reversal)
+        n2 fayN c(first reversal)
+        fDup    c(first duplication)
+        n3 fayN c(second reversal)
+        n2 fayN c(third reversal)
+        n3 fDivides dCondition
+        fDup    c(second suplication)
+        n3 fayN c(fourth reversal)
+        n2 fayN c(fifth reversal)
+        fNya
+	s(
+		sBuzz fMeow bHISS
+	) 
+        n3 fayN c(first reversal #2)
+        fDup    c(first duplication #2)
+        n4 fayN c(second reversal #2)
+        n2 fayN c(third reversal #2)
+        n3 fayN c(fourth reversal #2)
+        n5 fDivides dCondition
+        fDup    c(second duplication #2)
+        n3 fayN c(fifth reversal #2)
+        n2 fayN c(sixth reversal #2)
+        fNya
+	s(
+		fDup fMyaff fMeow bHISS e(exiting the loop)
+	)
+        c(before reversal #3)
+        n3 fayN f| fAwA cCondition
+        fNya
+        cNumber
+        s(
+) fMeow
+	fNotReached100 cCondition
+) bPurr fNya
